@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="./dist/front-end/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            Body Mass Index
+        </div>
+        <div class="main-card">
+            <form id="main-form" >
+                <input type="number" placeholder="weight in kilograms" min="0" id="weight"><br>
+                <input type="number" placeholder="height in centimeters" min="0" id="height"><br>
+                <div class="form-btn" id="submit-btn"><button>Show BMI</button></div>
+            </form>
+
+            <div id="status"></div>
+            <div id="info"></div>
+        </div>  
+    </div>
+   
+    <script src="./dist/front-end/index.js"></script>
+</body>
+</html>
