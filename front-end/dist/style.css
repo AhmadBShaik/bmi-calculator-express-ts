@@ -69,3 +69,25 @@
     font-family:Arial, Helvetica, sans-serif;
 }
 
+.info-card{
+    padding: 10px;
+    border: orange 2px solid;
+    box-shadow: 2px  salmon;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+#under-weight-info, #normal-weight-info, #over-weight-info{
+ text-align: center;   
+}
+
+
+#under-weight-info{
+    color: blue;
+}
+#normal-weight-info{
+    color: green;
+}
+#over-weight-info{
+    color: red;
+}
