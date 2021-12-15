@@ -1,18 +1,17 @@
 import express, {Request, Response} from 'express'
+import config from 'dotenv'
+import cors from 'cors'
+import { calculateBMI } from './business-logic'
 
 const app = express()
+
 app.use(express.json())
+config.config()
 
 // avoid Cross Origin Request error while development
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+app.use(cors())
 
-
-app.get('/',(req: Request, res: Response)=>{
+app.get('/get-bmi-info',(req: Request, res: Response)=>{
     return res.json({
             "UnderWeight": "Less than 18.5",
             "NormalWeight": "Between 18.5 and 25.0",
@@ -20,7 +19,7 @@ app.get('/',(req: Request, res: Response)=>{
     })
 })
 
-app.post('/',(req: Request, res: Response) => {
+app.post('/post-bmi-params',(req: Request, res: Response) => {
     const weight = req.body.weight as number
     const height = req.body.height as number
     
@@ -34,7 +33,7 @@ app.post('/',(req: Request, res: Response) => {
         res.status(400).end()        
     }
 
-    const bmi: number = Math.round(weight/ (height/100 * height/100)*10)/10
+    const bmi: number = calculateBMI(weight,height)
     let message = {status:""}
     if (bmi < 18.5){
         message.status = "Underweight"
@@ -48,5 +47,5 @@ app.post('/',(req: Request, res: Response) => {
     })
 })
 
-const PORT = 3000
+const PORT = process.env.PORT
 app.listen(PORT,() => `server running in ${PORT}`)

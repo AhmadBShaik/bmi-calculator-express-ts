@@ -6,7 +6,9 @@ const BMIStatus = document.getElementById("status");
 const underWeightInfo = document.getElementById("under-weight-info");
 const normalWeightInfo = document.getElementById("normal-weight-info");
 const overWeightInfo = document.getElementById("over-weight-info");
-fetch('http://localhost:3000')
+// http://localhost:3000/get-bmi-info
+// http://localhost:3000/get-bmi-info
+fetch('http://localhost:3000/get-bmi-info')
     .then(res => res.json())
     .then(data => {
     underWeightInfo.innerHTML = "Under Weight : " + data.UnderWeight + "<br>";
@@ -24,7 +26,7 @@ form.addEventListener('submit', (e) => {
     else {
         const weightValue = weight.value;
         const heightValue = height.value;
-        fetch('http://localhost:3000', {
+        fetch('http://localhost:3000/post-bmi-params', {
             method: 'POST',
             body: JSON.stringify({
                 height: heightValue,

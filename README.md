@@ -31,7 +31,7 @@ POST
     - 200 on valid submission
     - 400 on invalid submissions
 - examples
-    - # Valid submissions 
+    - #### Valid submissions 
     
     - `{ 
         "weight":30,
@@ -43,7 +43,7 @@ POST
         "height": 170
     }`
 
-    - # Invalid submissions 
+    - #### Invalid submissions 
     
     - height must be greater then 110 cm
         - `{ 
@@ -68,7 +68,7 @@ Navigate to front-end directory
 
 `cd front-end`
 
-Run the command to transpile the typescript code into javascript code()
+Run the command to transpile the typescript code into javascript code
 
 `tsc`
 
