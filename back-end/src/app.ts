@@ -22,15 +22,43 @@ app.get('/get-bmi-info',(req: Request, res: Response)=>{
 app.post('/post-bmi-params',(req: Request, res: Response) => {
     const weight = req.body.weight as number
     const height = req.body.height as number
-    
-    if(!(weight && height)){
-        res.statusMessage = "weight and height should not be empty"
+    if(weight || height){
+        if(!weight){
+            res.statusMessage = "weight is required"
+            res.status(400).end()  
+        }
+        
+        if(!height){
+            res.statusMessage = "height is required"
+            res.status(400).end()  
+        }
+
+        if(weight > height){
+            res.statusMessage = "weight can't be greater than height"
+            res.status(400).end()
+        }
+    }else{
+        res.statusMessage = "weight and height are required"
         res.status(400).end()  
     }
 
-    if (height && height < 110){
+    
+    if(height < 110){
         res.statusMessage = "valid height should not be less than 110 cm"
         res.status(400).end()        
+    }else if(height > 251){
+        res.statusMessage = "valid height should not be greater than 251 cm"
+        res.status(400).end()  
+    }
+
+    if(weight >= 700){
+        res.statusMessage = "valid weight should not be greater than 700 kg"
+        res.status(400).end()
+    }
+
+    if(weight < 20){
+        res.statusMessage = "valid weight should not be less than 20 kg"
+        res.status(400).end()
     }
 
     const bmi: number = calculateBMI(weight,height)

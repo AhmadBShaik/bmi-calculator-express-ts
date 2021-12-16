@@ -1,9 +1,11 @@
-const height = document.getElementById("height") as HTMLInputElement
+(()=>{
+    const height = document.getElementById("height") as HTMLInputElement
 const weight = document.getElementById("weight") as HTMLInputElement
 
 const form = document.getElementById("main-form") as HTMLFormElement
 
 const BMIStatus = document.getElementById("status") as HTMLElement
+BMIStatus.style.color = "maroon"
 
 const underWeightInfo = document.getElementById("under-weight-info") as HTMLElement
 const normalWeightInfo = document.getElementById("normal-weight-info") as HTMLElement
@@ -21,33 +23,51 @@ fetch('http://localhost:3000/get-bmi-info')
 form.addEventListener('submit',(e: Event)=>{
     
     e.preventDefault()
-    if (!(height.value && weight.value)){
-        BMIStatus.innerHTML = "please enter height and weight"
-    }else if(height.value && height.value as unknown as number <110 ){
-        BMIStatus.innerHTML = "please enter valid height"
+    if (height.value || weight.value){
+        if(!height.value){
+            BMIStatus.innerHTML = "Please enter height"
+        }else if(!weight.value){
+            BMIStatus.innerHTML = "Please enter weight"
+        }else{
+            if(parseInt(height.value) < 110){
+                BMIStatus.innerHTML = "Valid height should not be less than 110 cm"
+            }else if(parseInt(height.value) > 251){
+                BMIStatus.innerHTML = "Valid height should not be greater than 251 cm"
+            }else{
+                if(parseInt(weight.value) < 20){
+                    BMIStatus.innerHTML = "Valid weight should not be less than 20 kg"
+                }else if(parseInt(weight.value) >= 700){
+                    BMIStatus.innerHTML = "Valid weight should not be greater then 700 kg"
+                }else if(parseInt(weight.value) > parseInt(height.value)){
+                   BMIStatus.innerHTML = "Weight can't be greater than height"
+                }else{
+                    const weightValue= parseInt(weight.value)
+                    const heightValue = parseInt(height.value)
+                    fetch('http://localhost:3000/post-bmi-params',{
+                        method:'POST',
+                        body: JSON.stringify({
+                            height:heightValue,
+                            weight: weightValue
+                        }),
+                        headers: {
+                        'content-type': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        BMIStatus.innerHTML = data.status + "<br>" + data.bmi
+                        BMIStatus.style.color = "green"
+                        if(data.bmi<18.5){
+                            BMIStatus.style.color = "blue"
+                        }else if(data.bmi>25.0){
+                            BMIStatus.style.color = "red"
+                        }
+                    })
+                }
+            }
+        }
     }else{
-        const weightValue= weight.value as unknown as number
-        const heightValue = height.value as unknown as number
-        fetch('http://localhost:3000/post-bmi-params',{
-            method:'POST',
-            body: JSON.stringify({
-                height:heightValue,
-                weight: weightValue
-            }),
-            headers: {
-            'content-type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            BMIStatus.innerHTML = data.status + "<br>" + data.bmi
-            BMIStatus.style.color = "green"
-            if(data.bmi<18.5){
-                BMIStatus.style.color = "blue"
-            }else if(data.bmi>25.0){
-                BMIStatus.style.color = "red"
-            }
-        })
-
+        BMIStatus.innerHTML = "Please enter weight and height"    
     }
 })
+})()
